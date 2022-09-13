@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.pcshop.entities.Category;
+import com.pcshop.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,11 +25,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RestController
 @RequestMapping(value = "/categories")
 public class CategoryResource {
+
+    @Autowired
+    private CategoryService service;
     @GetMapping
     public ResponseEntity<List<Category>> findAll() {
-        List<Category> list = new ArrayList<>();
-        list.add(new Category(1L," Books " )) ;
-        list.add(new Category(2L, "Electonics"));
-        return ResponseEntity.ok() . body(list);
+        List<Category> list = service.findAll();
+        return ResponseEntity.ok().body(list);
     }
 }
