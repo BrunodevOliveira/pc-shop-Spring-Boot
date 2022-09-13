@@ -1,12 +1,16 @@
 package com.pcshop.services;
 
+import com.pcshop.dto.CategoryDTO;
 import com.pcshop.entities.Category;
 import com.pcshop.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryService {
@@ -14,7 +18,16 @@ public class CategoryService {
     private CategoryRepository repository;
 
     @Transactional(readOnly = true)
-    public List<Category> findAll() {
-        return repository.findAll();
+    public List<CategoryDTO> findAll() {
+        List<Category> list =  repository.findAll();
+
+        //Converte a lista de categorias para uma Lista de Categorias do Tipo DTO e RETORNO
+        return list.stream().map(cat -> new CategoryDTO(cat)).collect(Collectors.toList());
+    }
+    @Transactional(readOnly = true)
+    public CategoryDTO findById(Long id) {
+        Optional<Category> optionalEntity = repository.findById(id); //Surgiu para evitar que se trabalhe com valor nulo. Assim dentro desse Optional pode existir ou NAO a categoria
+        Category entity = optionalEntity.get(); //Pega o objeto que está dentro do optional, caso não ache retorna uma exceção.
+        return new CategoryDTO(entity);
     }
 }
