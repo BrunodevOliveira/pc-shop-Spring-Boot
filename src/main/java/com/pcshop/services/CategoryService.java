@@ -3,6 +3,7 @@ package com.pcshop.services;
 import com.pcshop.dto.CategoryDTO;
 import com.pcshop.entities.Category;
 import com.pcshop.repositories.CategoryRepository;
+import com.pcshop.services.exceptions.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +28,7 @@ public class CategoryService {
     @Transactional(readOnly = true)
     public CategoryDTO findById(Long id) {
         Optional<Category> optionalEntity = repository.findById(id); //Surgiu para evitar que se trabalhe com valor nulo. Assim dentro desse Optional pode existir ou NAO a categoria
-        Category entity = optionalEntity.get(); //Pega o objeto que está dentro do optional, caso não ache retorna uma exceção.
+        Category entity = optionalEntity.orElseThrow(() -> new EntityNotFoundException("Entity not found")); //se o objeto não estiver presente no Optional, posso retornar uma msg de erro
         return new CategoryDTO(entity);
     }
 }
