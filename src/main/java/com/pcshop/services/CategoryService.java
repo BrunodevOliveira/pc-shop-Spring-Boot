@@ -3,8 +3,11 @@ package com.pcshop.services;
 import com.pcshop.dto.CategoryDTO;
 import com.pcshop.entities.Category;
 import com.pcshop.repositories.CategoryRepository;
+import com.pcshop.services.exceptions.DataBaseException;
 import com.pcshop.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,6 +50,17 @@ public class CategoryService {
             return new CategoryDTO(entity);
         } catch (EntityNotFoundException e){
             throw new ResourceNotFoundException("Id not found" + id);
+        }
+    }
+
+    public void delete(Long id) { //Não utilizei o transactional pois preciso capturar uma exceção que com ele não conseguiria
+        try {
+            repository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException("Id not fauld" + id);
+        }
+        catch(DataIntegrityViolationException e){ //Integridade Referêncial-> Caso tente deletar uma categoria que possui produtos relacionados a ela
+            throw new DataBaseException("Integraty violation");
         }
     }
 }
