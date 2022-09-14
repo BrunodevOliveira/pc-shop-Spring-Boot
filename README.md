@@ -14,24 +14,29 @@ API para gerenciamento de produtos de informática na linguagem Java utilizando 
     - Serviço
     - Acesso a dados (Repository)
 - Criação de Entidades
-- Conexão com banco de dados relacional PostgreSQL
-- Validação de dados via JPA
+- Seeding da base de dados
+- Criar web services REST
+  - Parâmetros de rota @PathVariable
+  - Parâmetros de requisição @RequestBody
+  - Resposta da requisiçãoResponseEntity<T>
+- Padrão DTO
 - CRUD Completo
+- Tratamento de exceções
+- Paginação de dados
+- Associações entre entidades (N-N)
 
 ## 🎲 Clonando a aplicação
 
 #### Clone este repositório
-$ git clone <https://github.com/BrunodevOliveira/cadastro-pessoa-Spring-boot.git>
+$ git clone <https://github.com/BrunodevOliveira/pc-shop-Spring-Boot.git>
 
 #### Para executar o projeto, será necessário instalar os seguintes programas
-- [JDK 17](https://www.oracle.com/java/technologies/downloads/)
+- [JDK 11](https://www.oracle.com/java/technologies/downloads/)
 - [Maven 3.8.6](https://maven.apache.org/download.cgi)
 - [Intellij](https://www.jetbrains.com/pt-br/idea/download/#section=windows)
-- [PostegreSQL](https://www.postgresql.org/download/)
 
 ## Tecnologias utilizadas
 <p>
   <img alt="java" src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white" height="27" />
-  <img alt="Postgres" src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" height="27">
   <img alt="Postgres" src="https://img.shields.io/badge/Git-E34F26?style=for-the-badge&logo=git&logoColor=white" height="27">
 </p>
