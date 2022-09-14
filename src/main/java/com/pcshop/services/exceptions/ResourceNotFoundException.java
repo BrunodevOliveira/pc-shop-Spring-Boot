@@ -2,10 +2,10 @@ package com.pcshop.services.exceptions;
 
 
 //Essa Classe contém a mensagem customizada de erro que passamos no Category Service
-public class EntityNotFoundException extends  RuntimeException  {
+public class ResourceNotFoundException extends  RuntimeException  {
     private static final long serialVersionUID = 1L;
 
-    public EntityNotFoundException(String msg) {
+    public ResourceNotFoundException(String msg) {
         super(msg); //Repassa a msg para o construtor do RunTimeException
     }
 }

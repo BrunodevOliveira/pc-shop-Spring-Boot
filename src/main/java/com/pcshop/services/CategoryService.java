@@ -3,12 +3,12 @@ package com.pcshop.services;
 import com.pcshop.dto.CategoryDTO;
 import com.pcshop.entities.Category;
 import com.pcshop.repositories.CategoryRepository;
-import com.pcshop.services.exceptions.EntityNotFoundException;
+import com.pcshop.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,7 +28,7 @@ public class CategoryService {
     @Transactional(readOnly = true)
     public CategoryDTO findById(Long id) {
         Optional<Category> optionalEntity = repository.findById(id); //Surgiu para evitar que se trabalhe com valor nulo. Assim dentro desse Optional pode existir ou NAO a categoria
-        Category entity = optionalEntity.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+        Category entity = optionalEntity.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
         return new CategoryDTO(entity);
     }
     @Transactional
@@ -37,5 +37,16 @@ public class CategoryService {
         entity.setName(dto.getName()); //Transformo o DTO no meu obj com os dados (dessa forma teria que setar cada uma das informações trazidas no DTO)
         entity = repository.save(entity); //depois que salvar os dados retorna o entity já com o id
         return new CategoryDTO(entity);
+    }
+    @Transactional
+    public CategoryDTO update(Long id, CategoryDTO dto) {
+        try {
+            Category entity = repository.getOne(id);
+            entity.setName(dto.getName());
+            entity = repository.save(entity);
+            return new CategoryDTO(entity);
+        } catch (EntityNotFoundException e){
+            throw new ResourceNotFoundException("Id not found" + id);
+        }
     }
 }

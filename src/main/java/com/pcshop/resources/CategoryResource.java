@@ -36,4 +36,10 @@ public class CategoryResource {
                 .buildAndExpand(dto.getId()).toUri(); //buildAndExpand-> Valor que será incluido na estrutura | toUri->  é o padrão
         return ResponseEntity.created(uri).body(dto);
     }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @RequestBody CategoryDTO dto){
+        dto = service.update(id, dto);
+        return ResponseEntity.ok().body(dto);
+    }
 }
