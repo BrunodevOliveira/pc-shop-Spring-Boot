@@ -28,7 +28,14 @@ public class CategoryService {
     @Transactional(readOnly = true)
     public CategoryDTO findById(Long id) {
         Optional<Category> optionalEntity = repository.findById(id); //Surgiu para evitar que se trabalhe com valor nulo. Assim dentro desse Optional pode existir ou NAO a categoria
-        Category entity = optionalEntity.orElseThrow(() -> new EntityNotFoundException("Entity not found")); //se o objeto não estiver presente no Optional, posso retornar uma msg de erro
+        Category entity = optionalEntity.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+        return new CategoryDTO(entity);
+    }
+    @Transactional
+    public CategoryDTO insert(CategoryDTO dto) {
+        Category entity = new Category();
+        entity.setName(dto.getName()); //Transformo o DTO no meu obj com os dados (dessa forma teria que setar cada uma das informações trazidas no DTO)
+        entity = repository.save(entity); //depois que salvar os dados retorna o entity já com o id
         return new CategoryDTO(entity);
     }
 }
