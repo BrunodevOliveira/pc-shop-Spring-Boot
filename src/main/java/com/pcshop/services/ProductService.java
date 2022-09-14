@@ -37,7 +37,8 @@ public class ProductService {
     public ProductDTO findById(Long id) {
         Optional<Product> obj = repository.findById(id);
         Product entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-        return new ProductDTO(entity, entity.getCategories()); //Utilizo o constructor que recebe os dados do produto e as categorias que ele pertence
+        return new ProductDTO(entity, entity.getCategories());
+        //Retorno uma nova instância com os dados do produto e as categorias que ele pertence
     }
 
     @Transactional
@@ -73,17 +74,19 @@ public class ProductService {
         }
     }
 
+    //Método que trnasforma os dados vindos do DTO para Entidade
     private void copyDtoToEntity(ProductDTO dto, Product entity) {
-
+        //o Id não é modificado no momento de criar ou de atualizar
         entity.setName(dto.getName());
         entity.setDescription(dto.getDescription());
         entity.setDate(dto.getDate());
         entity.setImgUrl(dto.getImgUrl());
         entity.setPrice(dto.getPrice());
 
-        entity.getCategories().clear();
-        for (CategoryDTO catDto : dto.getCategories()) {
-            Category category = categoryRepository.getOne(catDto.getId());
+        //Copia somente as categorias que vieram do DTO
+        entity.getCategories().clear();//limpa as categorias que existem na entity
+        for (CategoryDTO catDto : dto.getCategories()) {//percorro todas as categorias do DTO
+            Category category = categoryRepository.getOne(catDto.getId()); //armazeno cada categoria na variável category sem precisar "acessar" o BD
             entity.getCategories().add(category);
         }
     }
