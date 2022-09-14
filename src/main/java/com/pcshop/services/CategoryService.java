@@ -8,6 +8,8 @@ import com.pcshop.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,11 +24,9 @@ public class CategoryService {
     private CategoryRepository repository;
 
     @Transactional(readOnly = true)
-    public List<CategoryDTO> findAll() {
-        List<Category> list =  repository.findAll();
-
-        //Converte a lista de categorias para uma Lista de Categorias do Tipo DTO e RETORNO
-        return list.stream().map(cat -> new CategoryDTO(cat)).collect(Collectors.toList());
+    public Page<CategoryDTO> findAllPaged(PageRequest pageRequest) { //Recebo a page enviada do Controller | O método agr é tipado como Page
+        Page<Category> list =  repository.findAll(pageRequest); //Faço uma busca com os valores enviados e salvo numa lista do tipo Page
+        return list.map(cat -> new CategoryDTO(cat)); //TRasnformo cada elementos em um DTP e retornouma nova lista para o controller
     }
     @Transactional(readOnly = true)
     public CategoryDTO findById(Long id) {
